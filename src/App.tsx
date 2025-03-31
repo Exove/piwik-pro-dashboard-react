@@ -1,7 +1,8 @@
 import TextBox from "./components/TextBox"
-
+import LineChartBox from "./components/LineChartBox"
 function App() {
 
+  // Test data before we get the real data from the API
   const TextBoxData = [
     { title: "Visitors", value: "42" },
     { title: "Page views", value: "142" },
@@ -12,6 +13,84 @@ function App() {
     { title: "Another metric", value: "1" },
   ]
 
+  const timeSeriesData = [
+    {
+      "timestamp__to_date": "2021-01-01",
+      "visitors": 22,
+      "page_views": 80,
+      "returning_visitors_rate": 1,
+      "bounce_rate": 0.181818181818182
+    },
+    {
+      "timestamp__to_date": "2021-01-02",
+      "visitors": 25,
+      "page_views": 56,
+      "returning_visitors_rate": 1,
+      "bounce_rate": 0.12
+    },
+    {
+      "timestamp__to_date": "2021-01-03",
+      "visitors": 22,
+      "page_views": 66,
+      "returning_visitors_rate": 1,
+      "bounce_rate": 0.227272727272727
+    },
+    {
+      "timestamp__to_date": "2021-01-04",
+      "visitors": 25,
+      "page_views": 78,
+      "returning_visitors_rate": 1,
+      "bounce_rate": 0.32
+    },
+    {
+      "timestamp__to_date": "2021-01-05",
+      "visitors": 27,
+      "page_views": 63,
+      "returning_visitors_rate": 1,
+      "bounce_rate": 0.444444444444444
+    },
+    {
+      "timestamp__to_date": "2021-01-06",
+      "visitors": 21,
+      "page_views": 68,
+      "returning_visitors_rate": 1,
+      "bounce_rate": 0.238095238095238
+    },
+    {
+      "timestamp__to_date": "2021-01-07",
+      "visitors": 18,
+      "page_views": 39,
+      "returning_visitors_rate": 1,
+      "bounce_rate": 0.388888888888889
+    },
+    {
+      "timestamp__to_date": "2021-01-08",
+      "visitors": 27,
+      "page_views": 87,
+      "returning_visitors_rate": 1,
+      "bounce_rate": 0.185185185185185
+    },
+    {
+      "timestamp__to_date": "2021-01-09",
+      "visitors": 17,
+      "page_views": 37,
+      "returning_visitors_rate": 1,
+      "bounce_rate": 0.411764705882353
+    },
+    {
+      "timestamp__to_date": "2021-01-10",
+      "visitors": 21,
+      "page_views": 70,
+      "returning_visitors_rate": 1,
+      "bounce_rate": 0.333333333333333
+    }
+  ]
+
+  const mappedData = timeSeriesData.map(item => ({
+    time: item.timestamp__to_date,
+    value: item.visitors,
+  }));
+
   return (
     <>
       <div className="tw:text-3xl tw:text-center tw:w-full tw:max-w-7xl tw:mx-5 tw:md-mx-10 tw:lg:mx-auto">
@@ -21,6 +100,7 @@ function App() {
             <TextBox key={index} title={data.title} value={data.value} />
           ))}
         </div>
+        <LineChartBox title="Visitors over time" data={mappedData} />
       </div>
     </>
   )
