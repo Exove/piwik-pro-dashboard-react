@@ -101,7 +101,7 @@ function App() {
               <TextBox title={data.title} value={data.value} />
             </div>
           ))}
-          <div className="tw:col-span-full tw:justify-self-stretch">
+          <div className="tw:col-span-full">
             <LineChartBox title="Visitors over time" data={mappedData} />
           </div>
         </div>

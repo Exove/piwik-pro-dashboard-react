@@ -1,4 +1,5 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from 'recharts';
+import ContentBox from './contentBox';
 
 interface LineChartProps {
     title: string;
@@ -12,15 +13,10 @@ interface LineChartProps {
  * Line chart component
  */
 export default function LineChartBox({ title, data }: LineChartProps) {
-
-  return (
-    <div className="tw:border tw:border-gray-300 tw:text-left tw:w-full">
-        <div className="tw:border-b tw:border-gray-300 tw:text-md tw:px-4 tw:py-2 tw:text-gray-500">
-            {title}
-        </div>
-        <div className="tw:text-md tw:px-4 tw:py-8 tw:font-bold tw:content-center">
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={data}>
+  const content = (
+    <div>
+        <ResponsiveContainer width="100%" height={300}>
+           <LineChart data={data}>
               <CartesianGrid stroke="#ccc" />
               <XAxis dataKey="time" />
               <YAxis
@@ -31,8 +27,8 @@ export default function LineChartBox({ title, data }: LineChartProps) {
               <Tooltip />
               <Line type="monotone" dataKey="value" stroke="#8884d8" />
             </LineChart>
-          </ResponsiveContainer>
-        </div>
+        </ResponsiveContainer>
     </div>
-  );
+  )
+  return <ContentBox title={title} content={content} />
 };
