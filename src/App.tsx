@@ -93,14 +93,18 @@ function App() {
 
   return (
     <>
-      <div className="tw:text-3xl tw:text-center tw:w-full tw:max-w-7xl tw:mx-5 tw:md-mx-10 tw:lg:mx-auto">
+      <div className="tw:text-3xl tw:text-center tw:max-w-7xl tw:mx-auto tw:my-10">
         <h1 className="tw:my-16">Piwik PRO Dashboard</h1>
-        <div className="tw:flex tw:flex-wrap tw:gap-8 tw:justify-center">
+        <div className="tw:grid tw:grid-cols-1 tw:md:grid-cols-2 tw:lg:grid-cols-3 tw:gap-8 tw:mx-4 tw:md:mx-8 tw:lg:mx-12">
           {TextBoxData.map((data, index) => (
-            <TextBox key={index} title={data.title} value={data.value} />
+            <div key={index}>
+              <TextBox title={data.title} value={data.value} />
+            </div>
           ))}
+          <div className="tw:col-span-full tw:justify-self-stretch">
+            <LineChartBox title="Visitors over time" data={mappedData} />
+          </div>
         </div>
-        <LineChartBox title="Visitors over time" data={mappedData} />
       </div>
     </>
   )
