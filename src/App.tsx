@@ -1,5 +1,6 @@
 import TextBox from "./components/TextBox"
 import LineChartBox from "./components/LineChartBox"
+import PieChartBox from "./components/PieChartBox"
 function App() {
 
   // Test data before we get the real data from the API
@@ -86,6 +87,13 @@ function App() {
     }
   ]
 
+  const pieChartData = [
+    { name: "Desktop", value: 10304 },
+    { name: "Smartphone", value: 6433 },
+    { name: "Tablet", value: 183 },
+    { name: "Unknown", value: 482 },
+  ]
+
   const mappedData = timeSeriesData.map(item => ({
     time: item.timestamp__to_date,
     value: item.visitors,
@@ -103,6 +111,9 @@ function App() {
           ))}
           <div className="tw:col-span-full">
             <LineChartBox title="Visitors over time" data={mappedData} />
+          </div>
+          <div className="tw:col-span-2">
+            <PieChartBox title="Devices" data={pieChartData} />
           </div>
         </div>
       </div>

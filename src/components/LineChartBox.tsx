@@ -1,5 +1,5 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from 'recharts';
-import ContentBox from './contentBox';
+import ContentBox from './ContentBox';
 
 interface LineChartProps {
     title: string;
