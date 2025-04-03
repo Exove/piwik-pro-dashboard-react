@@ -37,7 +37,6 @@ export default function PieChartBox({ title, data }: PieChartBoxProps) {
         <Legend wrapperStyle={{ fontSize: '16px' }} />
         </PieChart>
     </ResponsiveContainer>
-
   )
   
   return <ContentBox title={title} content={content} />

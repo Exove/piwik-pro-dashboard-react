@@ -164,7 +164,7 @@ function App() {
           <div className="tw:col-span-full">
             <ListBox title="Top pages" data={mappedTopPagesData} />
           </div>
-          <div className="tw:col-span-2">
+          <div className="tw:col-span-full tw:md:col-span-2">
             <PieChartBox title="Devices" data={pieChartData} />
           </div>
         </div>

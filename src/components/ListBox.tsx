@@ -28,12 +28,12 @@ export default function ListBox({ title, data }: ListBoxProps) {
       <tbody className="tw:bg-white tw:divide-y tw:divide-gray-200 tw:text-sm">
         {data.map((item, index) => (
           <tr key={index}>
-            <td className="tw:px-6 tw:py-4 tw:whitespace-nowrap">
+            <td className="tw:px-6 tw:py-4 tw:break-all">
               <a href={item.url} target='_blank' className="tw:text-blue-600 tw:hover:underline">
                 {item.url}
               </a>
             </td>
-            <td className="tw:px-6 tw:py-4 tw:whitespace-nowrap tw:text-right tw:text-gray-500">
+            <td className="tw:px-6 tw:py-4 tw:text-right tw:text-gray-500">
               {item.value.toLocaleString()}
             </td>
           </tr>
