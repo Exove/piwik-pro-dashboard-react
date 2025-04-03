@@ -6,7 +6,7 @@ const getColor = (index: number, total: number) => {
   return `hsl(${hue}, 70%, 50%)`;
 };
 
-interface PieChartProps {
+interface PieChartBoxProps {
     title: string;
     data: {
         name: string;
@@ -15,9 +15,9 @@ interface PieChartProps {
   }
 
 /**
- * Line chart component
+ * Pie chart component
  */
-export default function PieChartBox({ title, data }: PieChartProps) {
+export default function PieChartBox({ title, data }: PieChartBoxProps) {
   const content = (
     <ResponsiveContainer width="100%" height={300}>
         <PieChart>
