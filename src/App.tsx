@@ -18,17 +18,42 @@ function App() {
 
   // Overview data fetch
   useEffect(() => {
+    const controller = new AbortController();
+
     const fetchData = async () => {
-      const url = `/api/piwik-dashboard/overview?aggregated=true&range=${period}`;
-      const response = await fetch(url);
-      const data = await response.json();
-      console.log(data.data[0]);
-      if (Array.isArray(data.data) && data.data.length > 0) {
-        setOverviewData(data.data[0]);
+      try {
+        const url = `/api/piwik-dashboard/overview?aggregated=true&range=${period}`;
+        const response = await fetch(url, { signal: controller.signal });
+
+        if (!response.ok) {
+          throw new Error(
+            `API error: ${response.status} ${response.statusText}`
+          );
+        }
+
+        const data = await response.json();
+
+        if (data && Array.isArray(data.data)) {
+          setOverviewData(data.data);
+        } else {
+          console.warn('Unexpected data format:', data);
+          setOverviewData(null); // fallback if structure is not as expected
+        }
+      } catch (error) {
+        if (error instanceof Error && error.name === 'AbortError') {
+          // fetch was cancelled
+          return;
+        }
+        console.error('Failed to fetch overview data:', error);
+        setOverviewData(null); // fallback on error
       }
-      setOverviewData(data.data);
     };
+
     fetchData();
+
+    return () => {
+      controller.abort(); // cancel fetch on cleanup
+    };
   }, [period]);
 
   const timeSeriesData = [
