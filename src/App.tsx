@@ -1,5 +1,7 @@
 import TextBox from "./components/TextBox"
 import LineChartBox from "./components/LineChartBox"
+import PieChartBox from "./components/PieChartBox"
+import ListBox from "./components/ListBox"
 function App() {
 
   // Test data before we get the real data from the API
@@ -86,9 +88,64 @@ function App() {
     }
   ]
 
+  const pieChartData = [
+    { name: "Desktop", value: 10304 },
+    { name: "Smartphone", value: 6433 },
+    { name: "Tablet", value: 183 },
+    { name: "Unknown", value: 482 },
+  ]
+
   const mappedData = timeSeriesData.map(item => ({
     time: item.timestamp__to_date,
     value: item.visitors,
+  }));
+
+  const topPagesData = [
+    {
+      "event_url": "https://example.com/page/alpha",
+      "page_views": 10142
+    },
+    {
+      "event_url": "https://testsite.org/about",
+      "page_views": 7484
+    },
+    {
+      "event_url": "https://demo.fake/page1",
+      "page_views": 4916
+    },
+    {
+      "event_url": "https://myfakeurl.net/home",
+      "page_views": 4227
+    },
+    {
+      "event_url": "https://dummydata.io/contact",
+      "page_views": 4049
+    },
+    {
+      "event_url": "https://placeholder.co/section",
+      "page_views": 3434
+    },
+    {
+      "event_url": "https://notreal.org/products",
+      "page_views": 1904
+    },
+    {
+      "event_url": "https://sampledomain.info/blog",
+      "page_views": 1869
+    },
+    {
+      "event_url": "https://faketestsite.com/info",
+      "page_views": 1862
+    },
+    {
+      "event_url": "https://randomurl.fake/overview",
+      "page_views": 1805
+    }
+  ]
+
+  const mappedTopPagesData = topPagesData.map(item => ({
+    url: item.event_url,
+    value: item.page_views,
   }));
 
   return (
@@ -103,6 +160,12 @@ function App() {
           ))}
           <div className="tw:col-span-full">
             <LineChartBox title="Visitors over time" data={mappedData} />
+          </div>
+          <div className="tw:col-span-full">
+            <ListBox title="Top pages" data={mappedTopPagesData} />
+          </div>
+          <div className="tw:col-span-full tw:md:col-span-2">
+            <PieChartBox title="Devices" data={pieChartData} />
           </div>
         </div>
       </div>

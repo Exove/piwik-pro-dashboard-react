@@ -1,7 +1,7 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from 'recharts';
-import ContentBox from './contentBox';
+import ContentBox from './ContentBox';
 
-interface LineChartProps {
+interface LineChartBoxProps {
     title: string;
     data: {
         time: string;
@@ -12,7 +12,7 @@ interface LineChartProps {
 /**
  * Line chart component
  */
-export default function LineChartBox({ title, data }: LineChartProps) {
+export default function LineChartBox({ title, data }: LineChartBoxProps) {
   const content = (
     <div>
         <ResponsiveContainer width="100%" height={300}>

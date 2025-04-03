@@ -1,4 +1,4 @@
-import ContentBox from "./contentBox";
+import ContentBox from "./ContentBox";
 
 interface TextBoxProps {
     title: string;
