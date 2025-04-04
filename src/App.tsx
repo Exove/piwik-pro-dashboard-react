@@ -18,12 +18,10 @@ function App() {
 
   // Overview data fetch
   useEffect(() => {
-    const controller = new AbortController();
-
     const fetchData = async () => {
       try {
         const url = `/api/piwik-dashboard/overview?aggregated=true&range=${period}`;
-        const response = await fetch(url, { signal: controller.signal });
+        const response = await fetch(url);
 
         if (!response.ok) {
           throw new Error(
@@ -40,20 +38,12 @@ function App() {
           setOverviewData(null); // fallback if structure is not as expected
         }
       } catch (error) {
-        if (error instanceof Error && error.name === 'AbortError') {
-          // fetch was cancelled
-          return;
-        }
         console.error('Failed to fetch overview data:', error);
         setOverviewData(null); // fallback on error
       }
     };
 
     fetchData();
-
-    return () => {
-      controller.abort(); // cancel fetch on cleanup
-    };
   }, [period]);
 
   const timeSeriesData = [
