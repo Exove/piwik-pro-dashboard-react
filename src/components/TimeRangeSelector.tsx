@@ -16,7 +16,7 @@ export default function TimeRangeSelector({
     <div className="tw:mb-4 tw:flex tw:gap-2">
       <button
         onClick={() => setValue('7d')}
-        className={`tw:px-4 tw:py-2 rtw:ounded ${
+        className={`tw:px-4 tw:py-2 tw:rounded ${
           currentValue === '7d'
             ? 'tw:bg-blue-600 tw:text-white'
             : 'tw:bg-gray-200 tw:text-gray-800 tw:hover:bg-gray-300'

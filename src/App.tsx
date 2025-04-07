@@ -58,16 +58,24 @@ function App() {
         >
           {overviewDataAggregated &&
             overviewDataAggregated.map((item, index) => (
-              <TextBox key={index} title="Visitors" value={item.visitors} />
-            ))}
-          {overviewDataAggregated &&
-            overviewDataAggregated.map((item, index) => (
-              <TextBox key={index} title="Page views" value={item.page_views} />
+              <TextBox
+                key={`vs-${index}`}
+                title="Visitors"
+                value={item.visitors}
+              />
             ))}
           {overviewDataAggregated &&
             overviewDataAggregated.map((item, index) => (
               <TextBox
-                key={index}
+                key={`pw-${index}`}
+                title="Page views"
+                value={item.page_views}
+              />
+            ))}
+          {overviewDataAggregated &&
+            overviewDataAggregated.map((item, index) => (
+              <TextBox
+                key={`rvr-${index}`}
                 title="Returning visitors rate"
                 value={`${(item.returning_visitors_rate * 100).toFixed(2)}%`}
               />
@@ -75,7 +83,7 @@ function App() {
           {overviewDataAggregated &&
             overviewDataAggregated.map((item, index) => (
               <TextBox
-                key={index}
+                key={`br-${index}`}
                 title="Bounce rate"
                 value={`${(item.bounce_rate * 100).toFixed(2)}%`}
               />
