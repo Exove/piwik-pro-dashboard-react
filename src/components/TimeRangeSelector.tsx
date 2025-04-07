@@ -1,7 +1,7 @@
 import { Period } from '../utils/types';
 
 interface TimeRangeSelectorProps {
-  currentValue: string;
+  currentValue: Period;
   setValue: (value: Period) => void;
 }
 
