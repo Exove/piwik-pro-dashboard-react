@@ -12,6 +12,7 @@ import {
 import { Period, OverviewData, TopPagesData, DeviceData } from './utils/types';
 
 function App() {
+  // React states to store Piwik PRO data
   const [overviewData, setOverviewData] = useState<OverviewData[] | null>(null);
   const [overviewDataAggregated, setOverviewDataAggregated] = useState<
     OverviewData[] | null

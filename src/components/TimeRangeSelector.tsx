@@ -5,6 +5,9 @@ interface TimeRangeSelectorProps {
   setValue: (value: Period) => void;
 }
 
+/**
+ * TimeRangeSelector component that allows the user to select a time range
+ */
 export default function TimeRangeSelector({
   currentValue,
   setValue,
