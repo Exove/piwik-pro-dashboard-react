@@ -2,223 +2,91 @@ import TextBox from './components/TextBox';
 import LineChartBox from './components/LineChartBox';
 import PieChartBox from './components/PieChartBox';
 import ListBox from './components/ListBox';
+import TimeRangeSelector from './components/TimeRangeSelector';
 import { useEffect, useState } from 'react';
+import { fetchDeviceData, fetchOverviewData, fetchTopPagesData } from './services/piwikApi';
+import { Period, OverviewData, TopPagesData, DeviceData } from './utils/types';
 
 function App() {
-  type Period = '7d' | '30d';
-
-  const [overviewData, setOverviewData] = useState<OverviewData<number> | null>(
-    null
-  );
+  const [overviewData, setOverviewData] = useState<OverviewData[] | null>(null);
+  const [overviewDataAggregated, setOverviewDataAggregated] = useState<OverviewData[] | null>(null);
+  const [deviceData, setDeviceData] = useState<DeviceData[] | null>(null);
+  const [topPagesData, setTopPagesData] = useState<TopPagesData[] | null>(null);
   const [period, setPeriod] = useState<Period>('7d');
 
-  interface OverviewData<T> {
-    [key: string]: T;
-  }
-
-  // Overview data fetch
+  // Fetch Piwik PRO data
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const url = `/api/piwik-dashboard/overview?aggregated=true&range=${period}`;
-        const response = await fetch(url);
-
-        if (!response.ok) {
-          throw new Error(
-            `API error: ${response.status} ${response.statusText}`
-          );
-        }
-
-        const data = await response.json();
-
-        if (data && Array.isArray(data.data)) {
-          setOverviewData(data.data);
-        } else {
-          console.warn('Unexpected data format:', data);
-          setOverviewData(null); // fallback if structure is not as expected
-        }
+        const [
+          overview,
+          overviewAggregated,
+          device,
+          topPages,
+        ] = await Promise.all([
+          fetchOverviewData('false', period),
+          fetchOverviewData('true', period),
+          fetchDeviceData(period),
+          fetchTopPagesData(period),
+        ]);
+  
+        setOverviewData(overview);
+        setOverviewDataAggregated(overviewAggregated);
+        setDeviceData(device);
+        setTopPagesData(topPages);
       } catch (error) {
-        console.error('Failed to fetch overview data:', error);
-        setOverviewData(null); // fallback on error
+        console.error('Error fetching data:', error);
       }
     };
-
+  
     fetchData();
   }, [period]);
 
-  const timeSeriesData = [
-    {
-      timestamp__to_date: '2021-01-01',
-      visitors: 22,
-      page_views: 80,
-      returning_visitors_rate: 1,
-      bounce_rate: 0.181818181818182,
-    },
-    {
-      timestamp__to_date: '2021-01-02',
-      visitors: 25,
-      page_views: 56,
-      returning_visitors_rate: 1,
-      bounce_rate: 0.12,
-    },
-    {
-      timestamp__to_date: '2021-01-03',
-      visitors: 22,
-      page_views: 66,
-      returning_visitors_rate: 1,
-      bounce_rate: 0.227272727272727,
-    },
-    {
-      timestamp__to_date: '2021-01-04',
-      visitors: 25,
-      page_views: 78,
-      returning_visitors_rate: 1,
-      bounce_rate: 0.32,
-    },
-    {
-      timestamp__to_date: '2021-01-05',
-      visitors: 27,
-      page_views: 63,
-      returning_visitors_rate: 1,
-      bounce_rate: 0.444444444444444,
-    },
-    {
-      timestamp__to_date: '2021-01-06',
-      visitors: 21,
-      page_views: 68,
-      returning_visitors_rate: 1,
-      bounce_rate: 0.238095238095238,
-    },
-    {
-      timestamp__to_date: '2021-01-07',
-      visitors: 18,
-      page_views: 39,
-      returning_visitors_rate: 1,
-      bounce_rate: 0.388888888888889,
-    },
-    {
-      timestamp__to_date: '2021-01-08',
-      visitors: 27,
-      page_views: 87,
-      returning_visitors_rate: 1,
-      bounce_rate: 0.185185185185185,
-    },
-    {
-      timestamp__to_date: '2021-01-09',
-      visitors: 17,
-      page_views: 37,
-      returning_visitors_rate: 1,
-      bounce_rate: 0.411764705882353,
-    },
-    {
-      timestamp__to_date: '2021-01-10',
-      visitors: 21,
-      page_views: 70,
-      returning_visitors_rate: 1,
-      bounce_rate: 0.333333333333333,
-    },
-  ];
-
-  const pieChartData = [
-    { name: 'Desktop', value: 10304 },
-    { name: 'Smartphone', value: 6433 },
-    { name: 'Tablet', value: 183 },
-    { name: 'Unknown', value: 482 },
-  ];
-
-  const mappedData = timeSeriesData.map((item) => ({
-    time: item.timestamp__to_date,
-    value: item.visitors,
-  }));
-
-  const topPagesData = [
-    {
-      event_url: 'https://example.com/page/alpha',
-      page_views: 10142,
-    },
-    {
-      event_url: 'https://testsite.org/about',
-      page_views: 7484,
-    },
-    {
-      event_url: 'https://demo.fake/page1',
-      page_views: 4916,
-    },
-    {
-      event_url: 'https://myfakeurl.net/home',
-      page_views: 4227,
-    },
-    {
-      event_url: 'https://dummydata.io/contact',
-      page_views: 4049,
-    },
-    {
-      event_url: 'https://placeholder.co/section',
-      page_views: 3434,
-    },
-    {
-      event_url: 'https://notreal.org/products',
-      page_views: 1904,
-    },
-    {
-      event_url: 'https://sampledomain.info/blog',
-      page_views: 1869,
-    },
-    {
-      event_url: 'https://faketestsite.com/info',
-      page_views: 1862,
-    },
-    {
-      event_url: 'https://randomurl.fake/overview',
-      page_views: 1805,
-    },
-  ];
-
-  const mappedTopPagesData = topPagesData.map((item) => ({
-    url: item.event_url,
-    value: item.page_views,
-  }));
-
   return (
     <>
-      <div className="tw:mb-4 tw:flex tw:gap-2">
-        <button
-          onClick={() => setPeriod('7d')}
-          className={`tw:px-4 tw:py-2 rtw:ounded ${
-            period === '7d'
-              ? 'tw:bg-blue-600 tw:text-white'
-              : 'tw:bg-gray-200 tw:text-gray-800 tw:hover:bg-gray-300'
-          }`}
-        >
-          Last 7 Days
-        </button>
-        <button
-          onClick={() => setPeriod('30d')}
-          className={`tw:px-4 tw:py-2 tw:rounded ${
-            period === '30d'
-              ? 'tw:bg-blue-600 tw:text-white'
-              : 'tw:bg-gray-200 tw:text-gray-800 tw:hover:bg-gray-300'
-          }`}
-        >
-          Last 30 Days
-        </button>
-      </div>
+      <TimeRangeSelector currentValue={period} setValue={(value: Period) => setPeriod(value)}/>
       <div className="tw:text-3xl tw:text-center tw:max-w-7xl tw:mx-auto tw:my-10">
-        <h1 className="tw:my-16">Piwik PRO Dashboard</h1>
-        <div className="tw:grid tw:grid-cols-1 tw:md:grid-cols-2 tw:lg:grid-cols-3 tw:gap-8 tw:mx-4 tw:md:mx-8 tw:lg:mx-12">
-          {overviewData &&
-            Object.entries(overviewData[0]).map(([key, value]) => (
-              <TextBox key={key} title={key} value={value} />
-            ))}
-          <div className="tw:col-span-full">
-            <LineChartBox title="Visitors over time" data={mappedData} />
-          </div>
-          <div className="tw:col-span-full">
-            <ListBox title="Top pages" data={mappedTopPagesData} />
-          </div>
-          <div className="tw:col-span-full tw:md:col-span-2">
-            <PieChartBox title="Devices" data={pieChartData} />
-          </div>
+        <div className="tw:grid tw:grid-cols-1 tw:md:grid-cols-2 
+        tw:lg:grid-cols-3 tw:gap-8 tw:mx-4 tw:md:mx-8 tw:lg:mx-12">
+          { overviewDataAggregated && overviewDataAggregated.map((item, index) => (
+            <TextBox key={index} title="Visitors" value={item.visitors} />
+          ))}
+          { overviewDataAggregated && overviewDataAggregated.map((item, index) => (
+            <TextBox key={index} title="Page views" value={item.page_views} />
+          ))}
+          { overviewDataAggregated && overviewDataAggregated.map((item, index) => (
+            <TextBox key={index} title="Returning visitors rate" 
+            value={`${(item.returning_visitors_rate * 100).toFixed(2) }%`} />
+          ))}
+          { overviewDataAggregated && overviewDataAggregated.map((item, index) => (
+            <TextBox key={index} title="Bounce rate" value={`${(item.bounce_rate * 100).toFixed(2) }%`} />
+          ))}
+          { overviewData && (
+            <div className="tw:col-span-full">
+              <LineChartBox title='Visitors over time' data={overviewData.map((item, index) => (
+                { time: item.timestamp__to_date ?? index.toString(), value: item.visitors }
+              ))} />
+            </div>
+          )}
+          { overviewData && (
+            <div className="tw:col-span-full">
+              <LineChartBox title='Page views over time' data={overviewData.map((item, index) => (
+                { time: item.timestamp__to_date ?? index.toString(), value: item.page_views }
+              ))} />
+            </div>
+          )}
+          { topPagesData && (
+            <div className="tw:col-span-full">
+              <ListBox title="Top pages" data={topPagesData.map(page => (
+                { url: page.event_url, value: page.page_views }
+              ))} />
+            </div>)}
+          { deviceData && (
+            <div className="tw:col-span-full tw:md:col-span-2">
+              <PieChartBox title="Devices" data={deviceData.map(device => (
+                { name: device.device_type__label ?? 'Other', value: device.sessions }
+              ))} />
+            </div>)}
         </div>
       </div>
     </>
