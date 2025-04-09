@@ -26,8 +26,7 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Reset states before fetching new data so the loading skeleton
-        // is displayed while the new data is loaded
+        // Reset states to display loading skeleton
         setOverviewData(null);
         setOverviewDataAggregated(null);
         setDeviceData(null);
