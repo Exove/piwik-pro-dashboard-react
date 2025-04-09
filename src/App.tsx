@@ -69,7 +69,7 @@ function App() {
           {!overviewData &&
             !overviewDataAggregated &&
             !deviceData &&
-            !topPagesData && <ContentSkeleton count={9} />}
+            !topPagesData && <ContentSkeleton count={18} />}
           {/* Display data if available */}
           {overviewDataAggregated &&
             overviewDataAggregated.map((item, index) => (
