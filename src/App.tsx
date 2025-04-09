@@ -32,7 +32,7 @@ function App() {
         setDeviceData(null);
         setTopPagesData(null);
 
-        // Fech data
+        // Fetch data
         const [overview, overviewAggregated, device, topPages] =
           await Promise.all([
             fetchOverviewData('false', period),
