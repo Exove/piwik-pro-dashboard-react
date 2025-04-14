@@ -8,10 +8,16 @@ import {
 } from 'recharts';
 import ContentBox from './ContentBox';
 
-const getColor = (index: number, total: number) => {
-  const hue = Math.floor((360 / total) * index);
-  return `hsl(${hue}, 70%, 50%)`;
-};
+const COLORS = [
+  '#454ade',
+  '#e18ad4',
+  '#fac05e',
+  '#81f4e1',
+  '#f24236',
+  '#5e0b15',
+  '#41ae76',
+  '#1c7c54',
+];
 
 interface PieChartBoxProps {
   title: string;
@@ -35,9 +41,15 @@ export default function PieChartBox({ title, data }: PieChartBoxProps) {
           outerRadius={80}
           dataKey="value"
           label
+          minAngle={10}
         >
           {data.map((_, index) => (
-            <Cell key={`cell-${index}`} fill={getColor(index, data.length)} />
+            <Cell
+              key={`cell-${index}`}
+              fill={COLORS[index % COLORS.length]}
+              stroke="#fff"
+              strokeWidth={1}
+            />
           ))}
         </Pie>
         <Tooltip />

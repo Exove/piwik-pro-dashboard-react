@@ -10,6 +10,7 @@ import {
   fetchTopPagesData,
 } from './services/piwikApi';
 import { Period, OverviewData, TopPagesData, DeviceData } from './utils/types';
+import ContentSkeleton from './components/ContentSkeleton';
 
 function App() {
   // React states to store Piwik PRO data
@@ -25,6 +26,13 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Reset states to display loading skeleton
+        setOverviewData(null);
+        setOverviewDataAggregated(null);
+        setDeviceData(null);
+        setTopPagesData(null);
+
+        // Fetch data
         const [overview, overviewAggregated, device, topPages] =
           await Promise.all([
             fetchOverviewData('false', period),
@@ -33,6 +41,7 @@ function App() {
             fetchTopPagesData(period),
           ]);
 
+        // Set data to states
         setOverviewData(overview);
         setOverviewDataAggregated(overviewAggregated);
         setDeviceData(device);
@@ -56,6 +65,12 @@ function App() {
           className="tw:grid tw:grid-cols-1 tw:md:grid-cols-2 
         tw:lg:grid-cols-3 tw:gap-8 tw:mx-4 tw:md:mx-8 tw:lg:mx-12"
         >
+          {/* Display loading skeleton if no data is available */}
+          {!overviewData &&
+            !overviewDataAggregated &&
+            !deviceData &&
+            !topPagesData && <ContentSkeleton count={18} />}
+          {/* Display data if available */}
           {overviewDataAggregated &&
             overviewDataAggregated.map((item, index) => (
               <TextBox
